@@ -1,0 +1,85 @@
+Lesson 6 - Debug your Programs
+
+Debugging is absolutely essential for spotting bugs. Rust's compiler catches MANY bugs that C lets through (uninitialized variables, type mismatches, etc.), but it can't catch logic errors. That's where debugging comes in.
+
+Debugging tools for Rust:
+
+rust-gdb (GDB with Rust pretty-printers) — works on Linux
+rust-lldb (LLDB with Rust pretty-printers) — works on macOS and Linux
+VS Code debugger with the CodeLLDB extension — works everywhere, recommended for beginners
+
+To compile with debug info, just use cargo build (debug mode is the default). Do NOT use --release for debugging.
+
+Key debugger commands (GDB/LLDB):
+
+break main         — set a breakpoint at main
+run                — start the program
+next / n           — step over one line
+step / s           — step into a function
+print variable     — inspect a variable
+continue / c       — resume execution
+backtrace / bt     — show the call stack
+
+Exercise
+
+The following program aims to sum command-line arguments. It compiles, but produces wrong results. Debug and fix it.
+
+Expected: ./calculate 10 20 30 should print "The sum is 60"
+
+use std::env;
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let mut sum = 0;
+
+    for i in 0..args.len() {
+        let number: i32 = args[i].parse().unwrap();
+        sum = sum + number;
+    }
+
+    println!("The sum is {}", sum);
+}
+
+Hint: There are two bugs. One will crash the program (the program name is not a number). The other is a logic issue with the loop range.
+
+Note how Rust PREVENTS the bugs that the original C version had:
+- Uninitialized sum? Rust won't compile if you use a variable before assigning it.
+- Adding a string pointer to an int? Rust's type system makes this impossible.
+- Wrong format specifier (%s instead of %d)? Rust's println! handles types automatically.
+
+The bugs that remain are LOGIC bugs — the kind no compiler can catch for you.
+
+Lesson code
+
+Here's the broken program:
+
+use std::env;
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let mut sum = 0;
+
+    for i in 0..args.len() {
+        let number: i32 = args[i].parse().unwrap();
+        sum = sum + number;
+    }
+
+    println!("The sum is {}", sum);
+}
+
+And here's how we fixed it:
+
+use std::env;
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let mut sum = 0;
+
+    // Start at index 1 to skip the program name
+    for i in 1..args.len() {
+        let number: i32 = args[i].parse().unwrap();
+        sum = sum + number;
+    }
+
+    println!("The sum is {}", sum);
+}

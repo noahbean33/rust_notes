@@ -1,0 +1,65 @@
+Lesson 3 - Using Crates - Image Generation - Structs
+
+Implementing a PNG image generator, using the image crate from crates.io.
+
+This is the first lesson where we use cargo, Rust's build tool and package manager. From now on, all projects will use cargo.
+
+Setting up a cargo project:
+
+cargo new image-gen
+cd image-gen
+cargo add image
+
+This creates a project folder with a Cargo.toml (dependency file) and src/main.rs (your code).
+
+Key concepts in this lesson:
+
+Crates are Rust's libraries. You find them on https://crates.io and read their docs on https://docs.rs
+cargo add <crate> adds a dependency to your project.
+cargo build compiles your project. cargo run compiles AND runs it.
+Structs in Rust are declared with struct. No typedef needed.
+Rust has no header files. You bring things into scope with use.
+
+Follow the video along, follow up with the exercises!
+
+Exercise
+
+Code your own image generator using the image crate. Extend the code from the lesson to generate a checkered pattern (rather than just lines).
+
+This lesson's source code:
+
+use image::{RgbImage, Rgb};
+
+const WIDTH: u32 = 400;
+const HEIGHT: u32 = 400;
+
+fn main() {
+    println!("Generating image ...");
+
+    let mut img = RgbImage::new(WIDTH, HEIGHT);
+
+    let mint = Rgb([48u8, 176, 120]); // comes from a RGB color picker
+    let red = Rgb([255u8, 0, 0]);     // comes from a RGB color picker
+    let mut stripe = false;
+
+    for y in 0..HEIGHT {
+        if y % 10 == 0 {
+            stripe = !stripe;
+        }
+        for x in 0..WIDTH {
+            if stripe {
+                img.put_pixel(x, y, mint);
+            } else {
+                img.put_pixel(x, y, red);
+            }
+        }
+    }
+
+    img.save("out.png").unwrap();
+    println!("Done.");
+}
+
+Cargo.toml dependencies section:
+
+[dependencies]
+image = "0.25"

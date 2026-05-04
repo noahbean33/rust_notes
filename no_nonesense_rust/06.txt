@@ -1,0 +1,61 @@
+Lesson 4 - Arrays & Slices - Coding a Frequency Analyzer
+
+Deep dive into arrays, and coding our own character frequency analyzer. Why? Because it's THE best project to learn about arrays and memory. And it's useful in cryptography.
+
+Mental models learned here:
+
+Arrays are fixed-size collections of values, accessed by index: [i32; 256]
+
+You initialize an array with a default value using [0; 256] — no memset needed.
+
+When you pass an array to a function, you pass a reference (a "borrow"): &[u32; 256]. This is called a slice reference. The function can read but not own the data.
+
+&[u32] (without the size) is a "slice" — a reference to any contiguous sequence. Functions that accept slices are more flexible.
+
+Follow the video along, follow up with the exercises!
+
+Important takeaways from this lesson:
+
+Learn your text editor / IDE keyboard shortcuts. Really study them.
+
+Rust initializes arrays cleanly: [0u32; 256] gives you 256 zeros. No manual zeroing needed.
+
+Always use cargo clippy to catch common mistakes. It's like -Wall on steroids.
+
+Exercise
+
+Write your own frequency analyzer, ideally from scratch.
+
+Extend the frequency analyzer to print ASCII bars (composed of #), instead of count numbers:
+
+a | ##########
+b | ###
+c | #######
+
+This lesson's source code:
+
+use std::io::{self, Read};
+
+// Requires a character_counts array of size 256 (all possible bytes)
+fn print_all_character_counts(counts: &[u32; 256]) {
+    for i in 32..126u8 {
+        let freq = counts[i as usize];
+        if freq != 0 {
+            println!("{} -> {}", i as char, freq);
+        }
+    }
+}
+
+// A simple character frequency analyzer
+fn main() {
+    let mut counts: [u32; 256] = [0; 256];
+    // counts[0]  -> value at the first "slot"
+    // counts[59] -> value at the 60th "slot"
+
+    for byte in io::stdin().bytes() {
+        let b = byte.unwrap();
+        counts[b as usize] += 1;
+    }
+
+    print_all_character_counts(&counts);
+}

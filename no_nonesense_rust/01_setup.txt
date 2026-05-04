@@ -1,0 +1,99 @@
+Setup - Linux, macOS, Windows
+
+This course is intentionally minimal when it comes to tools. You do not need a special IDE, paid software, or a complex environment.
+
+All you need is:
+
+A terminal
+
+The Rust toolchain (rustc + cargo, installed via rustup)
+
+A text editor
+
+Below are simple setup instructions for each operating system.
+
+
+
+Linux
+
+Linux works out of the box and is the easiest platform to follow this course on.
+
+Install Rust
+
+Open a terminal and run:
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+Follow the prompts (default installation is fine).
+
+Then restart your terminal, or run:
+
+source $HOME/.cargo/env
+
+Verify
+
+rustc --version
+cargo --version
+
+If you see version numbers, you're good to go.
+
+
+
+macOS
+
+Install Rust
+
+Open a terminal and run the same command as Linux:
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+Verify
+
+rustc --version
+cargo --version
+
+If you see output, you're ready.
+
+
+
+Windows
+
+Option A: Native Windows (Recommended)
+
+Download and run the installer from https://rustup.rs
+
+It will ask you to install the Visual Studio C++ Build Tools if you don't have them. Follow its instructions.
+
+After installation, open a new terminal (PowerShell or Command Prompt).
+
+Verify
+
+rustc --version
+cargo --version
+
+Option B: WSL2
+
+If you prefer a Linux terminal on Windows, install WSL2:
+https://documentation.ubuntu.com/wsl/stable/howto/install-ubuntu-wsl2/
+
+Then follow the Linux instructions above inside your Ubuntu terminal.
+
+
+
+Text Editor
+
+You can use any text editor or IDE you like:
+
+VS Code (with the rust-analyzer extension — highly recommended)
+
+Sublime Text
+
+Notepad++
+
+Vim / Neovim
+
+Emacs
+
+Any other editor
+
+The course does not depend on editor-specific features. However, rust-analyzer provides excellent inline errors and autocomplete if you use VS Code.

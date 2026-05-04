@@ -1,0 +1,79 @@
+Lesson 1 - First Program, Printing, and Documentation
+
+Watch the video, follow up with exercises. I HIGHLY recommend pausing the video whenever something is not 100% clear, and researching it. This maximizes the learning effect.
+
+
+
+Key concepts in this lesson:
+
+println! is a macro (note the !) that prints text to the terminal with a newline.
+print! does the same without the newline.
+Format placeholders use {} instead of C's %d, %s, etc.
+Variables are declared with let. They are immutable by default.
+
+
+
+Explore the tools
+
+
+
+
+
+Open https://doc.rust-lang.org/std/macro.println.html in your browser and read how println! works.
+
+
+
+Find out how to print a literal { character (hint: search for "escape braces in Rust format strings"), and code a small program that outputs only the "{" character.
+
+
+
+Extend the program
+
+
+
+
+
+Modify the program from this lesson to print:
+
+
+
+
+
+the values of a and b
+
+
+
+the full computation (b / a = result)
+
+
+
+your name instead of "Daniel"
+
+
+
+Rebuild and run
+
+
+
+Understand what's happening
+
+
+
+
+
+Try removing fn main() and just write a println! at the top level. Try to compile. What error do you get?
+
+
+
+Explain in one sentence why every Rust program needs a main function.
+
+
+
+This lesson's source code:
+
+fn main() {
+    let a = 10;
+    let b = 40;
+    let s = "Daniel";
+    println!("My first test program!\nThe result is {}\nThis was computed by {}", b / a, s);
+}

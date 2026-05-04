@@ -1,0 +1,2 @@
+Hello, this is a sample input file for the XOR encryption exercise.
+Try encrypting and decrypting this file!

@@ -1,0 +1,123 @@
+Lesson 8 - Dynamic Collections with Vec
+
+Let's combine ALL the knowledge from ALL the previous episodes, and unlock one additional HUGE milestone: Dynamic collections.
+
+In this episode we create a graphical application in which the user can spawn unlimited rotating circles. To dynamically create new circles (without limits - up to (practical) infinity), we need a collection that can grow.
+
+In C, you'd use malloc/realloc/free. In Rust, you use Vec<T>. It's the same thing under the hood (heap allocation, automatic resizing), but Rust manages the memory for you. No manual free, no realloc, no sizeof.
+
+This same concept holds true if you:
+
+code a text editor with the possibility to open unlimited tabs (or enter unlimited text)
+
+code a game, with waves of enemies, and you dynamically increase the number of enemies with each wave
+
+you parse strings of which length is unbounded
+
+and much more
+
+Whenever you face something that is "unbounded", you use Vec<T>.
+
+Along the way, we also learn about:
+
+struct definitions and impl blocks
+
+the rand crate for random number generation
+
+reacting to user inputs in macroquad (new circles spawn whenever we hit Enter)
+
+Exercise
+
+Easy: I've left a bug in the code. The application doesn't draw random radii. They all have the same radius (50.0 is hardcoded in draw_circles). Fix it to use circle.radius instead.
+
+A bit harder, but follows the same structure as existing code: Modify the code below to also spawn randomly sized and randomly colored SQUARES whenever the user hits the SPACE key. The squares don't have to move.
+
+This lesson's source code:
+
+use macroquad::prelude::*;
+use macroquad::rand::gen_range;
+
+const WIDTH: f64 = 900.0;
+const HEIGHT: f64 = 600.0;
+
+struct Circle {
+    d: f64,
+    angle: f64,
+    speed: f64,
+    radius: f64,
+    color: Color,
+}
+
+fn generate_circle() -> Circle {
+    Circle {
+        d: gen_range(10.0, 200.0),
+        angle: 0.0,
+        speed: gen_range(1.0, 9.0),
+        radius: gen_range(5.0, 40.0),
+        color: Color::new(
+            gen_range(0.0, 1.0),
+            gen_range(0.0, 1.0),
+            gen_range(0.0, 1.0),
+            1.0,
+        ),
+    }
+}
+
+fn draw_circles(circles: &[Circle]) {
+    for circle in circles {
+        let x = circle.d * circle.angle.sin() + WIDTH / 2.0;
+        let y = circle.d * circle.angle.cos() + HEIGHT / 2.0;
+        draw_circle(x as f32, y as f32, circle.radius, circle.color);
+    }
+}
+
+fn move_circles(circles: &mut [Circle], dt: f64) {
+    for circle in circles {
+        circle.angle += circle.speed * dt;
+    }
+}
+
+fn window_conf() -> Conf {
+    Conf {
+        window_title: "Graphics in Rust".to_string(),
+        window_width: WIDTH as i32,
+        window_height: HEIGHT as i32,
+        ..Default::default()
+    }
+}
+
+#[macroquad::main(window_conf)]
+async fn main() {
+    let mut circles: Vec<Circle> = Vec::new();
+    circles.push(generate_circle());
+
+    loop {
+        // check if user presses keyboard:
+        if is_key_pressed(KeyCode::Enter) {
+            println!("Key pressed!");
+            circles.push(generate_circle());
+        }
+
+        let dt = get_frame_time() as f64;
+        move_circles(&mut circles, dt);
+
+        clear_background(BLACK);
+        draw_text("No-Nonsense Programming Animation", 120.0, 30.0, 20.0, LIGHTGRAY);
+        // draw anything here
+        draw_circles(&circles);
+
+        next_frame().await;
+    }
+}
+
+Cargo.toml dependencies section:
+
+[dependencies]
+macroquad = "0.4"
+
+Compare this with the C version:
+- malloc(circle_count * sizeof(Circle))  -->  Vec::new()
+- realloc(...)                           -->  circles.push(...) (Vec resizes automatically)
+- free(circle_memory)                    -->  not needed (Vec drops when it goes out of scope)
+- generate_circle(&circle_memory[i])     -->  generate_circle() returns a Circle by value
+- Circle *circle = &circle_memory[i]     -->  for circle in &circles (iterator)

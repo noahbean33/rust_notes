@@ -1,0 +1,45 @@
+Lesson 2 - Code ANYTHING using stdin and stdout
+
+Learn how to code ANYTHING by reading from stdin and writing to stdout. If you never heard about those, don't worry. After watching this lesson, you'll know how programs read and generate data. And you are able to write your own programs that read in anything, and write anything!!
+
+We're coding a small encryption program in this episode.
+
+Watch the video. Follow up with exercises.
+
+Key concepts in this lesson:
+
+std::io::stdin() gives you access to standard input (what's piped into your program).
+std::io::stdout() gives you access to standard output (what your program prints).
+The Read and Write traits let you work with raw bytes.
+.bytes() gives you an iterator over each byte of input.
+.unwrap() extracts the value from a Result. If something goes wrong, it crashes. We'll handle errors properly later.
+The ^ operator is XOR — same as in C.
+
+Exercises
+
+Based on this lesson's source code:
+
+use std::io::{self, Read, Write};
+
+fn main() {
+    let key: u8 = 42;
+
+    // u8 -> 8 bit number (values 0..255)
+    for byte in io::stdin().bytes() {
+        let b = byte.unwrap();
+        // write ANY transformation here -> converts ANY input to ANY output
+        io::stdout().write_all(&[b ^ key]).unwrap();
+    }
+}
+
+Compile the program and encrypt a message. You pipe something into the executable using echo -n (just like in the video), and redirect the output to a file using >.
+
+echo -n "secret message" | ./transformer > encrypted
+
+Decrypt that message file again.
+
+cat encrypted | ./transformer
+
+What happens if you execute echo "hello" | ./transformer | ./transformer ?
+
+Challenge (TAKE TIME FOR THIS): FROM SCRATCH (empty file), code your own little program that reads stdin and outputs the same characters UPPERCASE to stdout. E.g. echo "hello" | ./transformer should output "HELLO". Do research if you're not sure how to do it. Remember: Characters are just numbers. A byte for 'a' is 97, 'A' is 65. The difference is 32.

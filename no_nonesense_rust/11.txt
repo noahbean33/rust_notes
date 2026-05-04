@@ -1,0 +1,95 @@
+Lesson 9 - Strings in Rust (String vs &str)
+
+Let's understand Rust's two main string types and how they relate to the manual memory management you'd do in C.
+
+In C, a "string" is just a char* — a pointer to some bytes you allocated with malloc. You manage the memory yourself, null-terminate it, and free it when done. If you mess up, you get buffer overflows, use-after-free, or memory corruption.
+
+In Rust, there are two string types:
+
+String — an owned, heap-allocated, growable string. This is like C's malloc'd char*. It manages its own memory automatically.
+
+&str — a borrowed string slice. This is like C's const char*. It's a read-only view into a string. String literals ("hello") are &str.
+
+Key rules:
+
+String owns its data. When it goes out of scope, the memory is freed automatically.
+&str borrows data. It cannot outlive the String it points into.
+All Rust strings are valid UTF-8. Always.
+.len() returns bytes, .chars().count() returns characters (they differ for non-ASCII).
+
+Exercise
+
+From SCRATCH (empty file), write a program that lets the user input a line. Store it in a String. Print it back.
+
+The easy way (idiomatic Rust):
+
+use std::io;
+
+fn main() {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).unwrap();
+    let input = input.trim();
+    println!("You typed {}", input);
+}
+
+Now do it the HARD way — to understand what String does under the hood. Build the string byte by byte using a Vec<u8>, just like the C version uses malloc + realloc:
+
+use std::io::{self, Read};
+
+fn main() {
+    let mut buf: Vec<u8> = Vec::new();
+
+    for byte in io::stdin().bytes() {
+        let b = byte.unwrap();
+        if b == b'\n' {
+            break;
+        }
+        buf.push(b); // Vec reallocates internally when it runs out of space
+    }
+
+    let text = String::from_utf8(buf).unwrap();
+    println!("You typed {}", text);
+}
+
+Move the input logic into a separate function: fn read_line() -> String
+
+Lesson Code — the idiomatic version:
+
+use std::io;
+
+fn read_line() -> String {
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).unwrap();
+    input.trim().to_string()
+}
+
+fn main() {
+    let text = read_line();
+    println!("You typed {}", text);
+}
+
+Lesson Code — the manual version (to see how Vec works like malloc/realloc):
+
+use std::io::{self, Read};
+
+fn read_line_manual() -> String {
+    let mut buf: Vec<u8> = Vec::new();
+
+    for byte in io::stdin().bytes() {
+        let b = byte.unwrap();
+        if b == b'\n' {
+            break;
+        }
+        buf.push(b);
+        println!("Buffer capacity: {} bytes", buf.capacity());
+    }
+
+    String::from_utf8(buf).unwrap()
+}
+
+fn main() {
+    let text = read_line_manual();
+    println!("You typed {}", text);
+}
+
+Note: The memory corruption demo from the C version is IMPOSSIBLE in safe Rust. You simply cannot write past the end of a buffer. The compiler and runtime prevent it. This is the core promise of Rust.

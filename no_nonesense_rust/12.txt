@@ -1,0 +1,73 @@
+Lesson 10 - Immutability, const, and Rust's Type System
+
+In C, everything is mutable by default and you add const to opt into immutability. In Rust, it's the OPPOSITE: everything is immutable by default and you add mut to opt into mutability.
+
+This is a fundamental design choice. It means:
+
+let x = 5;          // immutable — cannot be changed
+let mut y = 5;      // mutable — can be changed
+y = 10;             // OK
+// x = 10;          // COMPILE ERROR
+
+For function parameters:
+
+fn read_only(s: &str) { ... }         // immutable borrow — like C's const char*
+fn read_write(s: &mut String) { ... }  // mutable borrow — like C's char*
+
+Rust also has two kinds of "constants":
+
+const PI: f64 = 3.14;     // compile-time constant, must have a type annotation, inlined everywhere
+static COUNTER: i32 = 0;  // a global variable with a fixed memory address, lives for the entire program
+
+Rust's number types are explicit about signedness:
+
+Signed: i8, i16, i32, i64, i128
+Unsigned: u8, u16, u32, u64, u128
+Floats: f32, f64 (always signed, just like C)
+
+No confusion about "can I make a double unsigned?" — the type name tells you everything.
+
+Exercise
+
+Implement your own strlen equivalent: fn own_strlen(s: &str) -> usize that counts bytes by iterating, without using .len().
+
+Implement your own fill function: fn fill_slice(slice: &mut [u8], value: u8) that sets every element in a mutable slice to the given value. This is the Rust equivalent of memset.
+
+Lesson Source Code
+
+use std::env;
+
+const PI: f64 = 3.14;
+
+fn own_strlen(s: &str) -> usize {
+    // count bytes manually
+    let mut count = 0;
+    for _ in s.bytes() {
+        count += 1;
+    }
+    count
+}
+
+fn modify_str(s: &mut String) {
+    s.clear();
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() != 2 {
+        println!("Usage: {} <string-enclosed-in-quotes>", args[0]);
+        return;
+    }
+
+    // Some string length counting
+    let input_length = own_strlen(&args[1]);
+    println!("String length is: {}", input_length);
+
+    // copying the user input string into my own buffer
+    let destination_buffer = args[1].clone();
+
+    println!("Copied string is: {}", destination_buffer);
+    println!("PI is {}", PI);
+    // destination_buffer is freed automatically when it goes out of scope
+}

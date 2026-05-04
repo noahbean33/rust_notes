@@ -1,0 +1,75 @@
+Lesson 7 - Graphics with Macroquad
+
+Let's apply our skills to some practical, no-nonsense graphics programming using macroquad!
+
+macroquad is a simple, cross-platform graphics library for Rust. It's pure Rust (no C dependencies to install), which makes setup trivial compared to raylib in C.
+
+Setting up:
+
+cargo new graphics
+cd graphics
+cargo add macroquad
+
+That's it. No system packages, no apt install, no linking flags. Cargo handles everything.
+
+Key concepts in this lesson:
+
+macroquad provides an async main function (don't worry about async for now — just use the pattern shown).
+The game loop calls next_frame().await each iteration.
+Drawing functions: draw_circle, draw_rectangle, draw_text, clear_background.
+Colors: RED, BLUE, GREEN, BLACK, WHITE, LIGHTGRAY, or Color::new(r, g, b, a).
+
+Exercise
+
+Install macroquad in a cargo project (just cargo add macroquad).
+
+Using macroquad: Animate a square that bounces off the walls of the screen (just like the old-school DVD screensaver: https://bouncingdvdlogo.com/)
+
+Lesson source code
+
+use macroquad::prelude::*;
+
+const AMPLITUDE: f64 = 120.0;
+const WIDTH: f64 = 900.0;
+const HEIGHT: f64 = 600.0;
+
+fn window_conf() -> Conf {
+    Conf {
+        window_title: "Graphics in Rust".to_string(),
+        window_width: WIDTH as i32,
+        window_height: HEIGHT as i32,
+        ..Default::default()
+    }
+}
+
+#[macroquad::main(window_conf)]
+async fn main() {
+    let mut angle: f64 = 0.0;
+
+    loop {
+        clear_background(BLACK);
+
+        draw_text("No-Nonsense Programming Animation", 120.0, 30.0, 20.0, LIGHTGRAY);
+
+        // draw anything here
+        let x = AMPLITUDE * angle.sin() + WIDTH / 2.0;
+        let y = AMPLITUDE * angle.cos() + HEIGHT / 2.0;
+        angle += 0.04;
+        draw_circle(x as f32, y as f32, 50.0, RED);
+
+        let x = AMPLITUDE * 0.5 * (angle - 3.0).sin() + WIDTH / 2.0;
+        let y = AMPLITUDE * 0.5 * (angle - 3.0).cos() + HEIGHT / 2.0;
+        draw_circle(x as f32, y as f32, 20.0, BLUE);
+
+        let x = AMPLITUDE * 0.2 * (angle - 4.0).sin() + WIDTH / 2.0;
+        let y = AMPLITUDE * 0.2 * (angle - 4.0).cos() + HEIGHT / 2.0;
+        draw_circle(x as f32, y as f32, 12.0, GREEN);
+
+        next_frame().await;
+    }
+}
+
+Cargo.toml dependencies section:
+
+[dependencies]
+macroquad = "0.4"

@@ -1,0 +1,47 @@
+Welcome to No-Nonsense Rust Programming
+
+How to use this course
+
+Watch the lessons with a terminal open
+
+Type the code yourself
+
+Build it with cargo (or rustc for the first lesson)
+
+Change things and rebuild
+
+Do not expect to understand everything immediately. Most topics are revisited across multiple lessons and exercises.
+
+Take notes and look things up.
+
+If you don't understand something:
+
+a type or function → look it up on https://doc.rust-lang.org/std/
+
+a crate → read its docs on https://docs.rs/
+
+an error → read the compiler message carefully. Rust has the best compiler errors of any language.
+
+Then search online. Only ask AI if you are absolutely lost.
+
+Exercises
+
+Each lesson includes exercises.
+Do them after watching the video.
+
+They are required to reinforce the concepts and build understanding.
+
+Operating system
+
+Any OS works. Rust has first-class support on all major platforms:
+
+Linux (easiest to follow along on)
+
+macOS (works out of the box)
+
+Windows (works natively — no WSL required, though WSL works too)
+
+You can find setup instructions on the next page!
+
+Start with Lesson 1.
+Have a terminal open.

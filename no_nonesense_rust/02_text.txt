@@ -1,0 +1,26 @@
+Lesson 0 - Rust as textfiles + compilers
+
+Watch the lesson, and follow up with the exercises down below.
+
+A Rust program is just a text file ending in .rs. You compile it using rustc (the Rust compiler) and run the resulting binary. That's it.
+
+Later we'll use cargo (Rust's build tool + package manager), but for now we keep it simple: one file, one compiler command.
+
+To compile and run:
+
+rustc code.rs
+./code
+
+Exercise
+
+Compile the following code. What does it do, and what does it output? Don't worry about how it works. Consider it a black box. Just compile, and play around.
+
+fn main() {
+    for i in 0..20 {
+        if i % 3 == 0 {
+            print!("\n");
+        } else {
+            print!("*");
+        }
+    }
+}

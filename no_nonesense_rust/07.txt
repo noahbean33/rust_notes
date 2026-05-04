@@ -1,0 +1,104 @@
+Lesson 5 - Understanding Ownership and Borrowing
+
+Using the simplest possible example (just trying to change the value of a variable within a function), we see that something doesn't quite work. Mutable references help.
+
+This is Rust's most important concept. In C, you learn pointers. In Rust, you learn ownership and borrowing. The idea is similar (passing references to data), but Rust enforces rules at compile time that prevent entire classes of bugs.
+
+Follow the video along, follow up with the exercises!
+
+
+
+Important takeaways from this lesson:
+
+
+
+
+
+Every value in Rust has exactly one owner.
+You can lend a value out via references: & (read-only) or &mut (read-write).
+You can have many &references OR one &mut reference, but never both at the same time.
+When a function takes a value by copy (like i32), changes inside don't affect the original — same as C.
+
+
+
+Exercise
+
+
+
+
+
+From SCRATCH (empty file), create a Rust file that defines a struct Planet with three fields: name: String, speed: i32, diameter: i32
+
+
+
+In main, create a default planet (name = empty string, speed = 0, diameter = 0).
+
+
+
+Create a function init_planet(planet: &mut Planet) that takes a MUTABLE REFERENCE to the struct, and sets values (name = "Earth", speed = 30, diameter = 12742).
+
+
+
+Create another function print_planet(planet: &Planet) that takes an IMMUTABLE REFERENCE and prints: "Planet Earth travels around the Sun at approximately 30 km/s and has a diameter of 12742 km."
+
+
+
+Verify that init_planet really updates the struct by calling print_planet before and after init_planet.
+
+
+
+If this exercise is too hard, don't worry: We'll talk about String operations in a later lesson.
+
+
+
+This lesson's source code:
+
+slices.rs
+
+fn modify_array(array: &mut [i32]) {
+    array[0] = 7;
+    array[1] = 7;
+    array[2] = 7;
+}   
+
+fn print_array(array: &[i32]) {
+    println!("array[0] = {}", array[0]);
+    println!("array[1] = {}", array[1]);
+    println!("array[2] = {}", array[2]);
+}   
+    
+fn main() 
+{
+    println!("Creating an array ...");
+    let mut array = [0, 4, 9];
+    print_array(&array);
+    
+    println!("Modifying array ...");
+    modify_array(&mut array);
+    print_array(&array);
+} 
+
+borrowing.rs:
+
+// this doesn't work, because number is passed by value (copied)
+fn square_broken(mut number: i32) {
+    number = number * number;
+    println!("Inside the broken function: Number = {}", number);
+}
+
+// this works, because number is passed by MUTABLE REFERENCE
+fn square_working(number: &mut i32) {
+    *number = *number * *number;
+    println!("Inside the working function: Number = {}", *number);
+}
+
+fn main() {
+    let mut number = 6;
+    println!("Trying to square the number {}", number);
+
+    square_broken(number);
+    println!("After passing by value: Number = {}", number);
+
+    square_working(&mut number);
+    println!("After passing by reference: Number = {}", number);
+}

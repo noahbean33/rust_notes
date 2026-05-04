@@ -1,0 +1,62 @@
+You reached the end of the course!
+
+AWESOME JOB.
+
+I hope you enjoyed it.
+
+Resources I highly recommend
+
+Free online resources:
+
+"The Rust Programming Language" (the Book) — https://doc.rust-lang.org/book/
+This is THE Rust book. Free, official, comprehensive. Read it cover to cover if you want to go deeper than this course. Chapters 1-10 cover everything we covered here and more.
+
+"Rust by Example" — https://doc.rust-lang.org/rust-by-example/
+Learn by doing. Short, focused examples for every Rust concept. Great as a reference.
+
+The standard library docs — https://doc.rust-lang.org/std/
+This is your manpage equivalent. Learn to read it. Search for any type or function here.
+
+Books (paid):
+
+"Programming Rust" (O'Reilly, by Blandy, Orendorff & Tindall) — the most thorough Rust book. Excellent for understanding ownership and the borrow checker deeply.
+
+"Rust in Action" (Manning, by McNamara) — more systems-programming focused. Good if you come from C.
+
+Practical stuff:
+
+vimtutor to get started in vim
+
+learn tmux. Just search for it. Setup vim keys for tmux.
+
+learn hotkeys in your OS: CTRL+W to close browser tabs, CTRL+T to open new tabs, and all of those key combinations. The course lessons mention MANY hotkeys. For vim, the terminal, etc.
+
+Useful cargo tools to install:
+
+cargo install cargo-watch    # auto-rebuild on file changes: cargo watch -x run
+cargo install cargo-expand   # see what macros expand to
+
+Useful commands:
+
+cargo clippy                 # lint your code (catches common mistakes)
+cargo fmt                    # auto-format your code
+cargo doc --open             # generate and view docs for your project + dependencies
+cargo test                   # run tests (we didn't cover testing, but you should learn it next)
+
+Project ideas to reinforce everything:
+
+Code a function plotter using the plotters crate — it reinforces EVERY concept learned in this course.
+
+Build a CLI tool (e.g. a file renamer, a grep clone, a todo app) using the clap crate for argument parsing.
+
+Recreate the XOR encryption tool from Lesson 2 but add proper error handling with Result instead of unwrap().
+
+What to learn next:
+
+Error handling (Result, the ? operator, custom error types)
+Enums and pattern matching (match)
+Traits (Rust's version of interfaces)
+Generics
+Closures and iterators
+Testing (cargo test, #[test])
+Async programming (tokio, async/await)
